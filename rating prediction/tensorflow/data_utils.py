@@ -20,13 +20,11 @@ def read_feature(dataset, dimension, name):
 			dimension)+"."+name+".theta")) as entity_file:
 		for entity_info in entity_file:
 			line = entity_info.strip().split(',')
-			entity = []
-			for i in line[1:]:
-				entity.append(float(i))
+			entity = [float(i) for i in line[1:]]
 			entity_feature[int(line[0])] = np.array(
 						entity, dtype=np.float32)
-
 	return entity_feature
+
 
 def read_data(dataset, dimension, batch_size, is_training):
 	user_feature = read_feature(dataset, dimension, 'user')
@@ -34,21 +32,14 @@ def read_data(dataset, dimension, batch_size, is_training):
 	user_size = len(user_feature)
 	item_size = len(item_feature)
 
-	if is_training:
-		data = pd.read_csv(os.path.join(
-					DATA_DIR, dataset+".train.dat"), 
-					sep='\t', header=None,
-					names=['user', 'item', 'rating'],
-					dtype={'rating': np.float32})
-	else:
-		data = pd.read_csv(os.path.join(
-					DATA_DIR, dataset+".test.dat"), 
-					sep='\t', header=None,
-					names=['user', 'item', 'rating'],
-					dtype={'rating': np.float32})
+	split = 'train' if self.is_training else 'test'
+	self.data = pd.read_csv(os.path.join(
+				DATA_DIR, dataset+".{}.dat".format(split)), 
+				sep='\t', header=None,
+				names=['user', 'item', 'rating'],
+				dtype={'rating': np.float32})
 
 	######################## ADD FEATURES #####################
-
 	user_feature_col, item_feature_col = [], []
 	for i in range(len(data)):
 		user_feature_col.append(
@@ -69,4 +60,3 @@ def read_data(dataset, dimension, batch_size, is_training):
 	dataset = dataset.batch(batch_size)
 
 	return dataset, user_size, item_size
-

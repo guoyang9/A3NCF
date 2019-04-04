@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 class AttNCF(nn.Module):
 	def __init__(self, user_size, item_size, 
-					embed_size, dropout, is_training):
+				embed_size, dropout, is_training):
 		super(AttNCF, self).__init__()
 		""" 
 		Important Args:
@@ -23,12 +23,6 @@ class AttNCF(nn.Module):
 		self.dropout = dropout
 		self.is_training = is_training
 
-		#Custom weights initialization.
-		def init_weights_xavier(m):
-			if type(m) == nn.Linear:
-				nn.init.xavier_uniform_(m.weight)
-				nn.init.constant_(m.bias.data, 0)
-
 		self.user_embedding = nn.Embedding(
 					self.user_size, self.embed_size)
 		self.item_embedding = nn.Embedding(
@@ -39,17 +33,14 @@ class AttNCF(nn.Module):
 
 		self.user_fusion = nn.Sequential(
 			nn.Linear(self.embed_size, self.embed_size),
-			nn.ReLU()
-			)
+			nn.ReLU())
 		self.item_fusion = nn.Sequential(
 			nn.Linear(self.embed_size, self.embed_size),
-			nn.ReLU()
-			)
+			nn.ReLU())
 
 		self.att_layer1 = nn.Sequential(
-			nn.Linear(2*self.embed_size, 1),
-			nn.ReLU()
-			)
+			nn.Linear(2 * self.embed_size, 1),
+			nn.ReLU())
 		self.att_layer2 = nn.Linear(1, self.embed_size, bias=False)
 
 		self.rating_predict = nn.Sequential(
@@ -59,8 +50,7 @@ class AttNCF(nn.Module):
 			# nn.Linear(self.embed_size, self.embed_size),
 			# nn.ReLU(),
 			# nn.Dropout(p=self.dropout),
-			nn.Linear(self.embed_size, 1)
-			)
+			nn.Linear(self.embed_size, 1))
 
 		for m in self.modules():
             if isinstance(m, nn.Linear):
@@ -71,28 +61,23 @@ class AttNCF(nn.Module):
 	def forward(self, user_id, item_id, user_text, item_text):
 
 		########################## INPUT #########################
-
 		user_id_embed = self.user_embedding(user_id)
 		item_id_embed = self.item_embedding(item_id)
 		
 		###################### FEATURE FUSION ####################
-
 		user_embed = user_id_embed + user_text
 		item_embed = item_id_embed + item_text
 		user_embed = self.user_fusion(user_embed)
 		item_embed = self.item_fusion(item_embed)
 
 		################### ATTENTIVE INTERACTION ################
-
 		feature_all = torch.cat((
 					user_embed, item_embed), dim=-1)
 		att_weights = self.att_layer2(self.att_layer1(feature_all))
 		att_weights = F.softmax(att_weights, dim=-1)
 
 		#################### RATING PREDICTION ###################
-
 		interact = att_weights * user_embed * item_embed
 		prediction = self.rating_predict(interact)
 
 		return prediction.view(-1)
-

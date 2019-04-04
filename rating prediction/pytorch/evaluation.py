@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import numpy as np 
 
+
 def metrics(model, dataloader_test):
 	RMSE = np.array([], dtype=np.float32)
 	for idx, batch_data in enumerate(dataloader_test):
@@ -18,4 +19,3 @@ def metrics(model, dataloader_test):
 		RMSE = np.append(RMSE, SE.detach().cpu().numpy())
 
 	return np.sqrt(RMSE.mean())
-
