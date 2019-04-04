@@ -69,3 +69,4 @@ def read_data(dataset, dimension, batch_size, is_training):
 	dataset = dataset.batch(batch_size)
 
 	return dataset, user_size, item_size
+

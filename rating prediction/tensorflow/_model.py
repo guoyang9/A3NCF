@@ -156,3 +156,4 @@ class AttNCF(object):
 			se = sess.run([self.se])[0]
 
 			return se
+

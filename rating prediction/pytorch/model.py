@@ -96,5 +96,3 @@ class AttNCF(nn.Module):
 
 		return prediction.view(-1)
 
-
-

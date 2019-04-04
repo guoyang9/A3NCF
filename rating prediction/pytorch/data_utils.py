@@ -85,3 +85,4 @@ class AttNCFDataset(Dataset):
 				  'rating': self.data['rating'][idx],}
 
 		return sample
+
