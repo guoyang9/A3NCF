@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from tensorboardX import SummaryWriter
+import torch.backends.cudnn as cudnn
 
 from data_utils import AttNCFDataset
 from model import AttNCF
@@ -43,6 +44,7 @@ def main():
 
 	opt_gpu = FLAGS.gpu
 	os.environ["CUDA_VISIBLE_DEVICES"] = opt_gpu
+	cudnn.benchmark = True
 
 	############################# PREPARE DATASET ##########################
 
@@ -80,7 +82,6 @@ def main():
 			rating = batch_data['rating'].cuda()
 
 			model.zero_grad()
-
 			prediction = model(user, item, user_feature, item_feature)
 			loss = criterion(prediction, rating)
 
@@ -90,7 +91,7 @@ def main():
 			# writer.add_scalar('data/mse_loss', loss.data.item(),
 			# 				epoch*len(dataloader_train)+idx)
 
-		print("Epoch %d training is done!" %epoch)
+		print("Epoch %d training is done---".format(epoch))
 
 		# Start testing
 		model.eval() 
@@ -98,9 +99,9 @@ def main():
 		RMSE = evaluation.metrics(model, dataloader_test)
 			
 		elapsed_time = time.time() - start_time
-		print("Epoch: %d\t" %epoch + "Epoch time: " + time.strftime(
+		print("Epoch: %d\t".format(epoch) + "Epoch time: " + time.strftime(
 						"%H: %M: %S", time.gmtime(elapsed_time)))
-		print("RMSE is %.3f.\n" %RMSE)
+		print("RMSE is %.3f.\n".format(RMSE))
 
 
 if __name__ == "__main__":

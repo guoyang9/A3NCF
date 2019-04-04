@@ -35,8 +35,8 @@ class AttNCFDataset(Dataset):
 		"""
 		Important Args:
 		dataset: the name of the chosen dataset
-		dimension: dimension number of user and item
-		is_training: depends on training or not
+		dimension: number of dimension of user and item embeddings
+		is_training: denotes training mode or not
 		"""
 		self.dataset = dataset
 		self.dimension = dimension
@@ -69,7 +69,6 @@ class AttNCFDataset(Dataset):
 		self.data['user_feature'] = user_feature_col
 		self.data['item_feature'] = item_feature_col
 
-		# print(self.data); sys.exit(0)
 
 	def get_size(self):
 		""" get the size of users and items."""

@@ -2,7 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import os, sys, time
+import os
+import sys
+import time
 
 import numpy as np 
 import tensorflow as tf 
@@ -58,7 +60,7 @@ def train(train_data, test_data, user_size, item_size):
 
 		ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
 		if ckpt:
-			print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
+			print("Reading model parameters from %s".format(ckpt.model_checkpoint_path))
 			model.saver.restore(sess, ckpt.model_checkpoint_path)
 		else:
 			print("Creating model with fresh parameters.")
@@ -92,8 +94,8 @@ def train(train_data, test_data, user_size, item_size):
 					se = model.step(sess, None)
 					RMSE = np.append(RMSE, se)
 			except tf.errors.OutOfRangeError:
-				print("\nRMSE is %.3f" % (np.sqrt(RMSE.mean())))
-				print("Epoch %d " %epoch + "Took: " + time.strftime("%H: %M: %S", 
+				print("\nRMSE is %.3f".format((np.sqrt(RMSE.mean()))))
+				print("Epoch %d ".format(epoch) + "Took: " + time.strftime("%H: %M: %S", 
 							time.gmtime(time.time() - start_time)))
 
 		######################### SAVE MODEL ########################

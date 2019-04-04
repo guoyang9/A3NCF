@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
 import torch
@@ -45,17 +46,11 @@ class AttNCF(nn.Module):
 			nn.ReLU()
 			)
 
-		self.user_fusion.apply(init_weights_xavier)
-		self.item_fusion.apply(init_weights_xavier)
-
 		self.att_layer1 = nn.Sequential(
 			nn.Linear(2*self.embed_size, 1),
 			nn.ReLU()
 			)
 		self.att_layer2 = nn.Linear(1, self.embed_size, bias=False)
-
-		self.att_layer1.apply(init_weights_xavier)
-		nn.init.xavier_uniform_(self.att_layer2.weight)
 
 		self.rating_predict = nn.Sequential(
 			nn.Linear(self.embed_size, self.embed_size),
@@ -66,7 +61,12 @@ class AttNCF(nn.Module):
 			# nn.Dropout(p=self.dropout),
 			nn.Linear(self.embed_size, 1)
 			)
-		self.rating_predict.apply(init_weights_xavier)
+
+		for m in self.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    m.bias.data.zero_()
 
 	def forward(self, user_id, item_id, user_text, item_text):
 

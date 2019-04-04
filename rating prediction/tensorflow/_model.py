@@ -1,7 +1,9 @@
 from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf 
+
 
 class AttNCF(object):
 	def __init__(self, user_size, item_size, embed_size, iterator,
