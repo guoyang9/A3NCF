@@ -53,10 +53,10 @@ class AttNCF(nn.Module):
 			nn.Linear(self.embed_size, 1))
 
 		for m in self.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
-                if m.bias is not None:
-                    m.bias.data.zero_()
+			if isinstance(m, nn.Linear):
+				nn.init.xavier_uniform_(m.weight)
+				if m.bias is not None:
+					m.bias.data.zero_()
 
 	def forward(self, user_id, item_id, user_text, item_text):
 
