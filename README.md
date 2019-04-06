@@ -18,6 +18,6 @@ Zhiyong Cheng, Ying Ding, Lei Zhu, Mohan Kankanhalli (2018). Aspect-Aware Latent
 * Make sure you have the LDA features in the right directory.
 
 * Train and test the code.
-```
-python main.py --dataset=somedata --embed_size=20 --gpu=0
-```
+	```
+	python main.py --dataset=somedata --embed_size=20 --gpu=0
+	```
