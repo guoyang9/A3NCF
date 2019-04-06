@@ -8,11 +8,15 @@ Zhiyong Cheng, Ying Ding, Lei Zhu, Mohan Kankanhalli (2018). Aspect-Aware Latent
 
 
 ## The requirements are as follows:
-* python 3.5
+* python==3.6
 
-* pytorch 0.4.0
+* pytorch==1.0.1
 
-* tensorflow 1.7
+* tensorflow==1.7
+
+* pandas==0.24.2
+
+* numpy==1.16.2
 
 ## Example to run:
 * Make sure you have the LDA features in the right directory.
