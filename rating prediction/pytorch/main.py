@@ -96,17 +96,15 @@ def main():
 			# writer.add_scalar('data/mse_loss', loss.data.item(),
 			# 				epoch*len(dataloader_train)+idx)
 
-		print("Epoch %d training is done---".format(epoch))
-
 		# Start testing
 		model.eval() 
 		model.is_training = False
 		RMSE = evaluation.metrics(model, dataloader_test)
 			
 		elapsed_time = time.time() - start_time
-		print("Epoch: %d\t".format(epoch) + "Epoch time: " + time.strftime(
+		print("Epoch: {:3d}\t".format(epoch) + "Epoch time: " + time.strftime(
 						"%H: %M: %S", time.gmtime(elapsed_time)))
-		print("RMSE is %.3f.\n".format(RMSE))
+		print("RMSE is {:.3f}.\n".format(RMSE))
 
 
 if __name__ == "__main__":
